@@ -1,7 +1,7 @@
 {
   "name": "fullstack_template",
   "version": "1.0.0",
-  "description": "",
+  "description": "- npm install - modify connection string - create database - npm run start:dev - npm run build:dev",
   "main": "index.js",
   "scripts": {
     "build:dev": "webpack --watch --mode=development",
