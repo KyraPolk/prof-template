@@ -17,17 +17,36 @@ const styleSheet = path.join(__dirname, 'styles.css');
 app.get('/styles.css', (req, res)=> res.sendFile(styleSheet));
 
 //GET
-app.get("/api/anime", async(req,res,next) =>{
-  res.send("we are connected on the server")
+app.get("/api/anime_db", async(req,res,next) =>{
+  //try,catch,response
+  try{
+   const SQL = `
+   SELECT *
+   FROM anime_db
+   `;
+   const response = await client.query(SQL)
+   res.send(response.rows)
+  }
+  catch(error){
+    next(error)
+  }
 })
 
 const init = async()=> {
   await client.connect();
   console.log('connected to database');
   const SQL = `
-    SQL SETUP AND SEED
-  `;
-  console.log('create your tables and seed data');
+  DROP TABLE IF EXISTS anime_db;
+  CREATE TABLE anime_db(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100)
+  );
+  INSERT INTO anime_db(name) VALUES('Red');
+  INSERT INTO anime_db(name) VALUES('Broly');
+  INSERT INTO anime_db(name) VALUES('Sword of the Wizard King')
+  `
+  //console.log('create your tables and seed data');
+  await client.query(SQL)
 
   const port = process.env.PORT || 2800;
   app.listen(port, ()=> {
